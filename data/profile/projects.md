@@ -1,12 +1,19 @@
 # Projects
 
+<!--
+TONE: Plain factual, third person. Focus on outcomes and metrics.
+Example: "Built a dashboard serving 200+ daily active users."
+NOT: "Created an amazing app that everyone loves"
+Target: 200-300 words per ## section
+-->
+
 ## [Project Name]
 
 **Description:** [1-2 sentences about what it does and why it matters]
 
 **Tech stack:** [comma-separated list]
 
-**My role:** [What YOU specifically built]
+**Role:** [What was specifically built — third person]
 
 **Outcome:** [Results, metrics, or impact. Numbers preferred.]
 
@@ -16,16 +23,4 @@
 
 ## [Another Project]
 
-**Description:** [...]
-
-**Tech stack:** [...]
-
-**My role:** [...]
-
-**Outcome:** [...]
-
-**Link:** [...]
-
----
-
-[Add more projects as needed. 3-5 strong projects is better than 10 weak ones.]
+[Same format. 3-5 strong projects > 10 weak ones.]

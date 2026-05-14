@@ -10,7 +10,7 @@ Before substantial work:
 - Multiple matches: prefer the most specific local skill for the package or concern you are changing; load additional skills only when the task spans multiple packages or concerns.
 <!-- intent-skills:end -->
 
-# Mini-Me
+# A.G.I
 
 AI-powered digital portfolio — a "digitalized version" of the owner. Visitors chat with an AI persona (Fallout-terminal-robot style: casual, goofy, sarcastic) that answers questions about experience, skills, and projects, grounded in real data via RAG.
 

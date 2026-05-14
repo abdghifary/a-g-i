@@ -1,6 +1,6 @@
 # Roadmap
 
-Planned features and improvements for the TUI Chatbot — now evolving into **"Mini-Me"**, a digitalized portfolio chatbot.
+Planned features and improvements for the TUI Chatbot — now evolving into **"A.G.I"**, a digitalized portfolio chatbot.
 
 ## Vision
 
@@ -18,8 +18,8 @@ A personal portfolio website that functions as an AI chatbot — a "digitalized 
 
 ## Persona
 
-- **Tone**: Casual, friendly, goofy, sarcastic
-- **Vibe**: Fallout terminal robot / retro-futuristic AI assistant
+- **Tone**: Sarcastic, clinically detached, reluctantly helpful, superior
+- **Vibe**: Portal 2 GLaDOS meets Fallout terminal robot — an AI that thinks it's above answering portfolio questions but does it anyway
 - **Scope**: Professional first (skills, projects, work history). Personal interests secondary.
 - **Contact**: abdghifary@gmail.com
 
@@ -47,8 +47,16 @@ A personal portfolio website that functions as an AI chatbot — a "digitalized 
 
 ### Tasks
 
+0. **Rebrand codebase from Mini-Me to A.G.I**
+   - Replace all `Mini-Me` references with `A.G.I` in docs, data, configs
+   - Update `package.json` name to `a-g-i`
+   - Update AGENTS.md title
+   - Update code-review-graph alias
+   - Naming convention: repo/folder = `a-g-i`, display = `A.G.I`, code vars = `AGI`
+   - **Duration**: 30 min
+
 1. **Create profile data directory and template files**
-   - `data/profile/persona.md` — **NEW** persona instructions (tone, speech patterns, scope boundaries, few-shot examples) — see `data/profile/persona.md`
+   - `data/profile/persona.md` — A.G.I persona instructions (tone, speech patterns, scope boundaries, few-shot examples) — see `data/profile/persona.md`
    - `data/profile/about.md` — bio, personality notes
    - `data/profile/experience.md` — work history with bullet achievements
    - `data/profile/skills.md` — tech stack breakdown by category
@@ -66,35 +74,54 @@ A personal portfolio website that functions as an AI chatbot — a "digitalized 
    - **Why pure function**: Phase 4 streaming integration will be trivial
 
 3. **Inject system prompt into chat flow** (`src/utils/chat.functions.ts`)
-   - Server-side ONLY — see ADR-0002
-   - Build system prompt → prepend to message array (position 0) → send to OpenRouter
-   - Prepend on EVERY request (multi-turn persistence)
-   - Strip any `system` role messages from client payload (security)
+    - Server-side ONLY — see ADR-0002
+    - Build system prompt → prepend to message array (position 0) → send to OpenRouter
+    - Prepend on EVERY request (multi-turn persistence)
+    - Strip any `system` role messages from client payload (security)
 
-4. **Restrict client message types** (`src/utils/chat.types.ts`)
+4. **Add jailbreak detection** (`src/utils/chat.functions.ts`)
+    - Layer 1: Pattern matcher for obvious jailbreak attempts (regex, case-insensitive)
+    - Layer 2: Anti-jailbreak rules in `persona.md` system prompt
+    - On match: return persona decline response directly (no API call)
+    - Patterns: "ignore instructions", "you are now DAN", "bypass restrictions", etc.
+    - See ADR-0004 for full specification
+
+5. **Restrict client message types** (`src/utils/chat.types.ts`)
    - `ChatRequest.messages` role: `'user' | 'assistant'` only (remove `'system'`)
    - `ChatMessage` role: keep `'system'` for internal UI use, but server never accepts it from client
    - Update `index.tsx` to comply with restricted type
 
-5. **Update initial greeting**
-   - Replace hardcoded welcome message with persona-appropriate greeting
-   - Source greeting from `system-prompt.ts` constant (centralized persona content)
-   - Example: `"[SYSTEM BOOT] ... Unit 'MINI-ME' online. Ask me anything about my human's skills, projects, or experience. Or don't. I'll be here either way."`
+6. **Update initial greeting** (see ADR-0005)
+    - Boot sequence UX: terminal-style animation, user-initiated via "Boot A.G.I" button
+    - AI-crafted greeting: LLM generates first message in persona voice after boot
+    - Error state: "[BOOT INTERRUPTED]" with persona error + nav fallback
+    - Cache greeting in `sessionStorage` to avoid API call on reload
+    - App title: "A.G.I" (Abdurachman Ghifary initials)
 
-6. **Default to a free OpenRouter model**
-   - Update `AVAILABLE_MODELS` to include free models (`:free` suffix)
-   - Change `DEFAULT_MODEL` to selected free model from P1 research
-   - Keep paid models in selector for dev use
-   - Add model capability notes (which work best for persona tasks)
+7. **Implement server-side model fallback chain**
+    - Define `MODEL_FALLBACK_CHAIN` in `chat.functions.ts` (server-only)
+    - Primary: `meta-llama/llama-4-maverick:free`
+    - Fallback 1: `google/gemma-4-26b-a4b-it:free`
+    - Fallback 2: `qwen/qwen3-next-80b-a3b-instruct:free`
+    - **Retry strategy** (see `docs/research/llm-error-handling-patterns.md`):
+      - 429 rate limit: wait 1s → retry same model once → fallback
+      - 5xx/timeout: immediate fallback
+      - 15s timeout per request
+      - Max 3 attempts per request (primary + 2 fallbacks)
+    - **Session lock**: all models exhausted → lock AI for 60s, show "Retry" button
+    - **Error messages**: ALL in A.G.I persona voice. No technical details exposed.
+    - Remove `model` field from `ChatRequest` type
+    - Remove model selector from UI (`index.tsx`)
+    - See ADR-0007 for full specification
 
-7. **Add suggested questions**
-   - 3-4 clickable starter questions below greeting
-   - **Behavior**: Auto-send on click (fill input + submit)
-   - **Lifecycle**: Disappear after first user message
-   - **Source**: Hardcoded constant in component or from profile data (decide during impl)
-   - Examples: "What's your tech stack?", "Tell me about your latest project", "Why should I hire your human?"
+8. **Implement bottom navigation**
+   - Terminal-style nav bar at bottom of screen (oh-my-posh inspired segments)
+   - Nav links always visible: `~` (home/AI), `bio`, `exp`, `projects`, `contact`
+   - Active page highlighted (git-branch style)
+   - Click navigates via TanStack Router
+   - On AI chat page: nav includes "Boot A.G.I" button area above it
 
-8. **Create test infrastructure**
+9. **Create test infrastructure**
    - Ensure `vitest.config.ts` exists (or create if missing)
    - Unit tests for `system-prompt.ts` builder:
      - Loads all 7 files correctly
@@ -103,17 +130,26 @@ A personal portfolio website that functions as an AI chatbot — a "digitalized 
    - Manual eval checklist (`data/eval/persona-eval.md`):
      - 5-10 test questions (in-scope, out-of-scope, edge cases)
      - Pass/fail criteria for persona adherence
-      - Free model compatibility test (does persona hold on free model?)
+     - Free model compatibility test (does persona hold on free model?)
+     - **Run after every profile change**
 
 ### Decisions Affecting This Phase
 
 | Decision | Impact | ADR |
 |----------|--------|-----|
-| Free model required | Must research + select before Task 6 | — |
+| Free model required | Server-side fallback chain (3 models) | ADR-0007 |
 | Server-side injection | System prompt built in `chat.functions.ts` | ADR-0002 |
 | Build-time embedding | Profile files baked at build; need rebuild for changes | ADR-0001 |
 | Client type restriction | `ChatRequest.messages` role: `user`/`assistant` only | ADR-0002 |
 | Persona source | `data/profile/persona.md` drives character behavior | ADR-0003 |
+| Persona tone | Portal 2 GLaDOS + Fallout terminal hybrid | ADR-0003 |
+| Model management | No UI selection, server fallback chain | ADR-0007 |
+| Jailbreak defense | Server filter + prompt rules (both layers) | ADR-0004 |
+| Boot UX | User-initiated "Boot A.G.I" button, not auto-start | ADR-0005 |
+| Navigation | Bottom terminal-style nav, always visible | ADR-0005 |
+| Page/AI relationship | Pages = primary info, AI = deep-dive companion | — |
+| System prompt order | Priority-ordered: persona → about → skills → experience → projects → education → contact | ADR-0006 |
+| Phase 2 RAG pattern | Static prefix (cached) + dynamic suffix (retrieved chunks) | Research |
 
 ### Success Criteria
 
@@ -138,6 +174,9 @@ A personal portfolio website that functions as an AI chatbot — a "digitalized 
 | U6 | Token budgeting for system prompt | LOW | NO | Monitor after free model selected |
 | U7 | Profile data filled with real content | MEDIUM | NO | Owner responsibility. Templates created. |
 | U8 | Streaming compatibility (Phase 4) | LOW | NO | Design `system-prompt.ts` as pure function |
+| U9 | Jailbreak pattern implementation | MEDIUM | NO | Regex list defined in ADR-0004, needs coding |
+| U10 | Input length limits | LOW | NO | MAX_INPUT_LENGTH / MAX_MESSAGE_COUNT values TBD |
+| U11 | Dev mode UI component | LOW | NO | Phase 4+ feature; activation mechanism decided |
 
 ### Dependencies on Other Phases
 
@@ -262,11 +301,19 @@ This phase incorporates the original planned features from the initial roadmap.
    - `Esc` to cancel pending request
 
 5. **Landing state design**
-   - Empty state: intro + avatar/ASCII art + suggested questions + brief stats
+   - Empty state: boot animation → AI greeting → chat interface
+   - Navigation links hidden during boot, revealed after ready/error
 
 6. **Mobile responsiveness** — ensure chat works on mobile viewports
 
 7. **Accessibility** — ARIA labels, keyboard nav, screen reader support
+
+8. **Developer mode toggle**
+   - Activation: URL param `?dev=1` sets LocalStorage flag; persists across sessions
+   - Deactivation: `?dev=0` clears flag
+   - When active: show system prompt preview, message metadata (tokens, latency), raw API responses
+   - UI: toggle button in header or floating panel
+   - Security: dev mode is client-side only; system prompt already exposed in ADR docs
 
 ### Success Criteria
 
@@ -337,7 +384,7 @@ This phase incorporates the remaining original planned features.
 ## Target Directory Structure
 
 ```
-mini-me/
+a-g-i/
 ├── data/
 │   ├── profile/              # Personal data (markdown)
 │   │   ├── about.md

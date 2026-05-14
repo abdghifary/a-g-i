@@ -1,6 +1,6 @@
 # Architecture
 
-Technical architecture, conventions, and reference material for the Mini-Me chatbot.
+Technical architecture, conventions, and reference material for the A.G.I chatbot.
 
 ## Stack
 
@@ -61,6 +61,12 @@ For planned future structure, see `docs/roadmap.md`.
 10. **Client message type restriction**: `ChatRequest.messages` role restricted to `'user' | 'assistant'` (no `'system'` from client)
 11. **Suggested questions behavior**: Auto-send on click, disappear after first user message
 12. **Free model default**: Phase 1 requires free OpenRouter model (`:free` suffix) as default due to $0 budget constraint
+13. **Jailbreak detection**: Server-side pattern filter + system prompt anti-jailbreak rules — see [ADR-0004](adr/0004-jailbreak-detection.md)
+14. **Dev mode**: URL param (`?dev=1`) + LocalStorage activation for developer tooling
+15. **AI-crafted greeting**: LLM generates first message; boot sequence UX — see [ADR-0005](adr/0005-ai-crafted-greeting.md)
+16. **App title**: "A.G.I." (Abdurachman Ghifary initials) — see [ADR-0005](adr/0005-ai-crafted-greeting.md)
+17. **System prompt assembly**: Static (all 7 files), priority-ordered, with section delimiters — see [ADR-0006](adr/0006-system-prompt-assembly.md)
+18. **Model management**: Server-side fallback chain, no UI selection — see [ADR-0007](adr/0007-server-side-model-management.md)
 
 > See [`docs/adr/`](adr/) for full rationale, alternatives considered, and trade-offs.
 
@@ -83,8 +89,9 @@ For planned future structure, see `docs/roadmap.md`.
 | `App` | Component | `src/routes/index.tsx:9` | Main chat UI — messages state, mutation, input handling |
 | `ChatMessage` | Interface | `src/utils/chat.types.ts:1` | `{id, role, content, createdAt}` — UI state type |
 | `ChatRequest` | Interface | `src/utils/chat.types.ts:8` | `{messages, model}` — server function input (messages: user/assistant only) |
-| `AVAILABLE_MODELS` | Const | `src/utils/chat.types.ts:19` | Model list — Phase 1: must include free models (`:free` suffix) |
-| `DEFAULT_MODEL` | Const | `src/utils/chat.types.ts:26` | **Phase 1: change to free model** (was `anthropic/claude-sonnet-4`) |
+| `ChatRequestMessage` | Interface | `src/utils/chat.types.ts` | Minimal `{role, content}` — no `id`/`createdAt`. Stripped before API call |
+| `AVAILABLE_MODELS` | Const | `src/utils/chat.types.ts:19` | Model list — Phase 1: server-side only, no UI exposure |
+| `MODEL_FALLBACK_CHAIN` | Const | `src/utils/chat.functions.ts` | Server-only fallback chain (3 free models) |
 | `getRouter` | Function | `src/router.tsx:9` | Creates TanStack router with SSR query integration |
 | `RootDocument` | Component | `src/routes/__root.tsx:47` | HTML shell with theme init, Header, Footer, devtools |
 | `ThemeToggle` | Component | `src/components/ThemeToggle.tsx:34` | 3-state toggle with localStorage + system preference |

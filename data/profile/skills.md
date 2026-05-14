@@ -1,26 +1,27 @@
 # Skills
 
+<!--
+TONE: Plain factual. List technologies, include years of experience.
+Example: "React / TypeScript (5 years) — primary expertise"
+NOT: "I'm a wizard at React"
+-->
+
 ## Frontend
 
-[Your frontend skills. Can be comma-separated or bulleted.]
+[List skills. Include years of experience where relevant.]
 
-- React / Next.js
-- TypeScript
-- TanStack Router, TanStack Query, TanStack Start
+- React / TypeScript (5 years) — primary expertise
+- TanStack Router, Query, Start
 - Tailwind CSS
 - [Add yours...]
 
 ## Backend
-
-[Your backend skills]
 
 - Node.js / Express
 - PostgreSQL
 - [Add yours...]
 
 ## Tools & Platforms
-
-[Dev tools, platforms, workflow tools]
 
 - Git / GitHub
 - Docker

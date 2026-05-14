@@ -1,5 +1,10 @@
 # Contact
 
+<!--
+TONE: Plain factual. A.G.I will present this info with sarcasm.
+Keep email and links current — visitors WILL click them.
+-->
+
 ## Email
 
 abdghifary@gmail.com

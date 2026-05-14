@@ -1,5 +1,10 @@
 # Education
 
+<!--
+TONE: Plain factual. List degrees, certifications, relevant coursework.
+Keep it concise — A.G.I will expand on your expertise with personality.
+-->
+
 ## [Degree] — [University/Institution]
 
 *[Start Year] – [End Year]*
@@ -11,7 +16,3 @@
 *[Year]*
 
 [Brief description if relevant]
-
-## [Another Degree or Certification]
-
-*[Details]*

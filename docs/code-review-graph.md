@@ -21,7 +21,7 @@ Since OpenCode doesn't support hooks, use the daemon for automatic graph updates
 
 ```bash
 # Register this repo
-crg-daemon add /home/agi/Work/Personal/Repo/mini-me --alias mini-me
+crg-daemon add /home/agi/Work/Personal/Repo/a-g-i --alias a-g-i
 
 # Start the daemon
 crg-daemon start
@@ -30,7 +30,7 @@ crg-daemon start
 crg-daemon status
 
 # View logs
-crg-daemon logs --repo mini-me -f
+crg-daemon logs --repo a-g-i -f
 ```
 
 The daemon watches `~/.code-review-graph/watch.toml` and auto-rebuilds the graph on file changes.

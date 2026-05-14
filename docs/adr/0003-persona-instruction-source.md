@@ -26,7 +26,7 @@ Separating them into a different directory (`data/persona/`) implies an architec
 ### Structure
 
 ```markdown
-# Mini-Me Persona Instructions
+# A.G.I Persona Instructions
 
 ## Identity
 [Who the character is]
