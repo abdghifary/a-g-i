@@ -1,193 +1,286 @@
-Welcome to your new TanStack Start app! 
+# A.G.I — AI-Powered Digital Portfolio
 
-# Getting Started
+> _"I'm not just another AI assistant. I'm A.G.I — Abdurachman Ghifary's digitalized counterpart. Ask me about his skills, projects, or why he still uses NeoVim in [current year]."_
 
-To run this application:
+A.G.I is an AI-powered digital portfolio that functions as a chatbot — a "digitalized version" of the owner. Visitors interact with an AI persona (think Fallout terminal robot meets Portal 2 GLaDOS: casual, goofy, sarcastic, clinically detached) that answers questions about experience, skills, and projects, grounded in real data via Retrieval-Augmented Generation (RAG).
+
+**Live Demo**: _Coming soon_  
+**Contact**: [abdghifary@gmail.com](mailto:abdghifary@gmail.com)
+
+---
+
+## The Concept
+
+Traditional portfolios are static. A.G.I makes yours conversational.
+
+Instead of scrolling through bullet points, visitors **chat** with an AI that embodies your professional identity. It knows your work history, tech stack, project outcomes, and education — and delivers them with personality.
+
+- **Professional first**: Skills, projects, work history, education
+- **Personality-driven**: Sarcastic, superior, reluctantly helpful
+- **Grounded in reality**: All answers come from real profile data, not hallucinations
+- **Zero-cost AI**: Runs entirely on free OpenRouter models (no paid APIs, no GPU)
+
+---
+
+## Features
+
+| Feature                      | Status  | Notes                                                       |
+| ---------------------------- | ------- | ----------------------------------------------------------- |
+| **AI Chat Interface**        | Active  | Terminal-inspired UI with WebTUI + Catppuccin Mocha theme   |
+| **Persona-Driven Responses** | Active  | Fallout/GLaDOS-style AI persona via system prompt           |
+| **Profile Data RAG**         | Phase 2 | Semantic search over markdown profile files                 |
+| **Multi-Model Fallback**     | Active  | 3-model server-side fallback chain (free models)            |
+| **Jailbreak Detection**      | Phase 1 | Server-side pattern filter + prompt-level defenses          |
+| **Theme Toggle**             | Active  | Light / Dark / Auto with FOUC prevention                    |
+| **Static Pages**             | Active  | Bio, Experience, Projects, Contact as traditional pages     |
+| **Streaming Responses**      | Phase 4 | Real-time token streaming (planned)                         |
+| **Structured Tool Output**   | Phase 3 | Skills badges, project cards, timeline components (planned) |
+| **Evaluation Suite**         | Phase 5 | Golden set + LLM-as-judge quality metrics (planned)         |
+
+---
+
+## Tech Stack
+
+| Layer               | Technology                                                                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Framework**       | [TanStack Start](https://tanstack.com/start) (React SSR) + [TanStack Router](https://tanstack.com/router)                                  |
+| **State & Data**    | [TanStack Query](https://tanstack.com/query)                                                                                               |
+| **Styling**         | [WebTUI](https://webtui.ink/) + [Tailwind CSS v4](https://tailwindcss.com/) + [Catppuccin Mocha](https://github.com/catppuccin/catppuccin) |
+| **AI / LLM**        | [OpenRouter](https://openrouter.ai/) via `@openrouter/sdk`                                                                                 |
+| **Vector DB**       | [Orama](https://orama.com/) (planned, Phase 2)                                                                                             |
+| **Build Tool**      | [Vite 8](https://vitejs.dev/)                                                                                                              |
+| **Testing**         | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)                                                            |
+| **Package Manager** | [pnpm](https://pnpm.io/)                                                                                                                   |
+| **TypeScript**      | Strict mode, ESM-only                                                                                                                      |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 22+ (LTS recommended)
+- [pnpm](https://pnpm.io/installation) 10+
+- [OpenRouter API key](https://openrouter.ai/settings/keys) (free tier works)
+
+### Installation
 
 ```bash
-npm install
-npm run dev
+# Clone the repository
+git clone https://github.com/yourusername/a-g-i.git
+cd a-g-i
+
+# Install dependencies
+pnpm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env and add your OPENROUTER_API_KEY
 ```
 
-# Building For Production
+### Environment Variables
 
-To build this application for production:
+| Variable             | Required | Description                                                           |
+| -------------------- | -------- | --------------------------------------------------------------------- |
+| `OPENROUTER_API_KEY` | **Yes**  | Your OpenRouter API key                                               |
+| `APP_URL`            | No       | App URL for OpenRouter attribution (default: `http://localhost:3000`) |
+
+### Development
 
 ```bash
-npm run build
+# Start the dev server
+pnpm dev
+# → http://localhost:3000
+
+# Run tests
+pnpm test
+
+# Lint
+pnpm lint
+
+# Production build
+pnpm build
+
+# Preview production build
+pnpm preview
 ```
 
-## Testing
+> **Note**: If `@openrouter/sdk` build scripts need approval, run `pnpm approve-builds`.
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+---
 
-```bash
-npm run test
+## Project Structure
+
+```
+a-g-i/
+├── data/
+│   └── profile/                  # Profile data + persona instructions (markdown)
+│       ├── persona.md            # AI persona: tone, scope, examples
+│       ├── about.md              # Bio, personality notes
+│       ├── experience.md         # Work history with achievements
+│       ├── skills.md             # Tech stack breakdown
+│       ├── projects.md           # Notable projects with outcomes
+│       ├── education.md          # Education background
+│       └── contact.md            # Contact info, social links
+├── docs/
+│   ├── architecture.md           # Stack, conventions, code map
+│   ├── roadmap.md                # 6-phase development plan
+│   └── adr/                      # Architecture Decision Records
+├── src/
+│   ├── components/               # Shared UI (Header, Footer, ThemeToggle)
+│   ├── integrations/
+│   │   └── tanstack-query/       # Query provider + devtools
+│   ├── routes/
+│   │   ├── __root.tsx            # Root layout (HTML shell, theme init)
+│   │   ├── index.tsx             # Chat interface (main page)
+│   │   ├── about.tsx             # About page
+│   │   └── demo/                 # Demo routes (deletable)
+│   ├── utils/
+│   │   ├── chat.functions.ts     # Server functions (OpenRouter calls) — SERVER ONLY
+│   │   ├── chat.types.ts         # Shared types and model definitions
+│   │   └── system-prompt.ts      # System prompt builder — SERVER ONLY
+│   ├── router.tsx                # Router config with Query integration
+│   └── styles.css                # WebTUI + Tailwind styles (layer order critical!)
+├── .env.example
+├── package.json
+└── README.md
 ```
 
-## Styling
+---
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## Architecture Overview
 
-### Removing Tailwind CSS
+### Hybrid: Pages + AI Companion
 
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `npm install @tailwindcss/vite tailwindcss -D`
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
+```
+User Journey:
+├─ Landing (index.tsx) ──► AI Chat (primary interface)
+│                           └─ Deep-dive questions (RAG details)
+├─ /about ──► Static page (primary info)
+├─ /experience ──► Static page (primary info)
+├─ /projects ──► Static page (primary info)
+└─ /contact ──► Static page (primary info)
 ```
 
-Then anywhere in your JSX you can use it like so:
+- **Traditional pages** contain basic information (resume-style fallback)
+- **AI chat** explains details NOT on pages (project war stories, behind-the-scenes, nuance)
+- **Boot sequence**: User-initiated startup via "Boot A.G.I" button with terminal animation
 
-```tsx
-<Link to="/about">About</Link>
-```
+### Security Model
 
-This will create a link that will navigate to the `/about` route.
+| Asset                | Protection                                                              |
+| -------------------- | ----------------------------------------------------------------------- |
+| `OPENROUTER_API_KEY` | Server functions only (`process.env`)                                   |
+| System prompt        | Assembled server-side, never exposed to browser                         |
+| Profile data         | Build-time embedding via `import.meta.glob`, server bundle only         |
+| Client messages      | `role: 'user' \| 'assistant'` only — `system` role rejected server-side |
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+---
 
-### Using A Layout
+## Roadmap
 
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
+| Phase | Focus                         | Status      |
+| ----- | ----------------------------- | ----------- |
+| **1** | Persona & System Prompt       | In Progress |
+| **2** | RAG Pipeline (Local, Free)    | Planned     |
+| **3** | Structured Outputs & Tool Use | Planned     |
+| **4** | Streaming & UX Polish         | Planned     |
+| **5** | Evaluation & Quality          | Planned     |
+| **6** | Production & Deployment       | Planned     |
 
-Here is an example layout that includes a header:
+See [`docs/roadmap.md`](docs/roadmap.md) for the full 6-phase plan with architecture diagrams and detailed task breakdowns.
 
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+---
 
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
+## Persona
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+A.G.I's character is **not** a generic AI assistant. It is:
 
-## Server Functions
+- **Tone**: Sarcastic, clinically detached, reluctantly helpful, superior
+- **Vibe**: Portal 2 GLaDOS meets Fallout terminal robot
+- **Scope**: Professional first (skills, projects, work history). Personal interests secondary.
+- **Speech patterns**: Science framing, system brackets, dry humor
 
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
+Example interaction:
 
-```tsx
-import { createServerFn } from '@tanstack/react-start'
+> **User**: "What projects have you worked on?"  
+> **A.G.I**: "_sigh_... INITIATING PROJECT DATABASE SCAN. Stand by, human."
 
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
+Persona instructions live in [`data/profile/persona.md`](data/profile/persona.md).
 
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
+---
 
-## API Routes
+## Development Guidelines
 
-You can create API routes by using the `server` property in your route definitions:
+### Critical Rules
 
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
+- **NEVER** expose `OPENROUTER_API_KEY` to client code — all LLM calls go through `createServerFn`
+- **NEVER** import from `@openrouter/sdk` in client components — server functions only
+- **NEVER** suppress type errors with `as any`, `@ts-ignore`, or `@ts-expect-error`
+- **ALWAYS** run `pnpm test && pnpm lint` before committing
+- **ALWAYS** place Tailwind imports AFTER WebTUI imports in `src/styles.css`
 
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
+### Naming Conventions
 
-## Data Fetching
+| Context                | Format  | Example                       |
+| ---------------------- | ------- | ----------------------------- |
+| GitHub repo / folder   | `a-g-i` | `github.com/user/a-g-i`       |
+| Display / UI title     | `A.G.I` | `<title>A.G.I</title>`        |
+| Code variables / types | `AGI`   | `AGIBootButton`, `AGIMessage` |
+| Package.json name      | `a-g-i` | `"name": "a-g-i"`             |
 
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
+### Code Style
 
-For example:
+- Path aliases: `#/*` maps to `./src/*`
+- Strict TypeScript: `strict: true`, `noUnusedLocals`, `noUnusedParameters`
+- ESM-only: `"type": "module"` in package.json
+- Component style: Default exports for components, named exports for utilities/types
 
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
+### WebTUI Gotchas
 
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
+- WebTUI attributes in React use trailing dash: `box-="square"` not `box="square"`
+- WebTUI CSS layer declaration (`@layer base, utils, components;`) must come BEFORE any `@import`
+- Tailwind imports must come AFTER WebTUI imports in `src/styles.css`
 
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
+---
 
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+## Architecture Decisions
 
-# Demo files
+Key technical decisions are documented as Architecture Decision Records (ADRs) in `docs/adr/`:
 
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
+| ADR                                                       | Topic                                                   |
+| --------------------------------------------------------- | ------------------------------------------------------- |
+| [ADR-0001](docs/adr/0001-profile-data-loading.md)         | Profile data loading via `import.meta.glob('?raw')`     |
+| [ADR-0002](docs/adr/0002-system-prompt-injection.md)      | Server-side only system prompt injection                |
+| [ADR-0003](docs/adr/0003-persona-instruction-source.md)   | Persona instruction source in `data/profile/persona.md` |
+| [ADR-0004](docs/adr/0004-jailbreak-detection.md)          | Jailbreak detection strategy                            |
+| [ADR-0005](docs/adr/0005-ai-crafted-greeting.md)          | AI-crafted greeting & boot UX                           |
+| [ADR-0006](docs/adr/0006-system-prompt-assembly.md)       | System prompt assembly order                            |
+| [ADR-0007](docs/adr/0007-server-side-model-management.md) | Server-side model fallback chain                        |
 
-# Learn More
+---
 
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+## Learning Goals
 
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+This project serves as a hands-on learning vehicle for the **Frontend → AI Engineer** transition:
+
+| Phase | Skills Learned                                               |
+| ----- | ------------------------------------------------------------ |
+| **1** | Prompt engineering, system prompt design, persona crafting   |
+| **2** | Embeddings, vector databases, chunking, semantic search, RAG |
+| **3** | Function calling, structured outputs, tool design            |
+| **4** | Streaming, production UX, context management                 |
+| **5** | LLM evaluation, golden sets, LLM-as-judge                    |
+| **6** | Deployment, monitoring, rate limiting, cost management       |
+
+---
+
+## License
+
+MIT © Abdurachman Ghifary
+
+---
+
+<p align="center">
+  <em>Built with <a href="https://tanstack.com/start">TanStack Start</a>, powered by <a href="https://openrouter.ai">OpenRouter</a>, styled with <a href="https://webtui.ink">WebTUI</a>.</em>
+</p>
