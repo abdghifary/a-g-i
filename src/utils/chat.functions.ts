@@ -10,7 +10,7 @@ const MODEL_FALLBACK_CHAIN = [
   'qwen/qwen3-next-80b-a3b-instruct:free',
 ] as const
 
-const RETRYABLE_STATUS_CODES = [429, 500, 502, 503, 504]
+const RETRYABLE_STATUS_CODES = [404, 429, 500, 502, 503, 504]
 
 const REQUEST_TIMEOUT = 15_000
 const SESSION_LOCK_DURATION = 60_000
@@ -99,8 +99,8 @@ function isNonRetryableClientError(error: unknown): boolean {
       const statusCode = parseInt(statusMatch[1], 10)
       return statusCode >= 400 && statusCode < 500 && !RETRYABLE_STATUS_CODES.includes(statusCode)
     }
-    const errWithStatus = error as Error & { status?: number; response?: { status?: number } }
-    const status = errWithStatus.status ?? errWithStatus.response?.status
+    const errWithStatus = error as Error & { status?: number; statusCode?: number; response?: { status?: number } }
+    const status = errWithStatus.status ?? errWithStatus.statusCode ?? errWithStatus.response?.status
     if (status !== undefined) {
       return status >= 400 && status < 500 && !RETRYABLE_STATUS_CODES.includes(status)
     }
@@ -121,8 +121,8 @@ function isNonRetryableClientError(error: unknown): boolean {
 
 const getClient = () =>
   new OpenRouter({
-    apiKey: import.meta.env.OPENROUTER_API_KEY ?? '',
-    httpReferer: import.meta.env.APP_URL ?? 'http://localhost:3000',
+    apiKey: process.env['OPENROUTER_API_KEY'] ?? '',
+    httpReferer: process.env['APP_URL'] ?? 'http://localhost:3000',
     appTitle: 'A.G.I',
   })
 
@@ -138,8 +138,8 @@ function extractStatusCode(error: unknown): number | undefined {
   if (error instanceof Error) {
     const statusMatch = error.message.match(/\b(\d{3})\b/)
     if (statusMatch) return parseInt(statusMatch[1], 10)
-    const errWithStatus = error as Error & { status?: number; response?: { status?: number } }
-    return errWithStatus.status ?? errWithStatus.response?.status
+    const errWithStatus = error as Error & { status?: number; statusCode?: number; response?: { status?: number } }
+    return errWithStatus.status ?? errWithStatus.statusCode ?? errWithStatus.response?.status
   }
   if (typeof error === 'object' && error !== null) {
     const errObj = error as Record<string, unknown>
