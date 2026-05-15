@@ -8,10 +8,10 @@ export default function Header() {
         <Link to="/" className="no-underline">
           <span is-="badge" variant-="foreground0" cap-="round">
             <span className="tui-cursor mr-1" />
-            TUI CHAT
+            A.G.I
           </span>
         </Link>
-        <span className="text-sm opacity-80 hidden sm:inline-block">/home/user/chat.sh</span>
+        <span className="text-sm opacity-80 hidden sm:inline-block">/home/user/agi.sh</span>
       </div>
 
       <div className="flex items-center gap-4">

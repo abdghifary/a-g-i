@@ -1,26 +1,15 @@
 # Projects
 
-<!--
-TONE: Plain factual, third person. Focus on outcomes and metrics.
-Example: "Built a dashboard serving 200+ daily active users."
-NOT: "Created an amazing app that everyone loves"
-Target: 200-300 words per ## section
--->
-
 ## [Project Name]
 
-**Description:** [1-2 sentences about what it does and why it matters]
+[PLACEHOLDER] Provide a short overview of one notable project, product, or portfolio experiment. Explain what problem it addressed, what the project did, and why it mattered in practical terms.
 
-**Tech stack:** [comma-separated list]
+[PLACEHOLDER] Use this section to capture scope and outcome in plain language. Keep it grounded in the real project later, and avoid vague claims like “innovative” or “game-changing.”
 
-**Role:** [What was specifically built — third person]
+### Tech Stack
 
-**Outcome:** [Results, metrics, or impact. Numbers preferred.]
+[PLACEHOLDER] List the main technologies used in the project, such as framework, language, data layer, UI system, and deployment or tooling choices. Keep the format compact and scannable.
 
-**Link:** [URL if public]
+### Outcome
 
----
-
-## [Another Project]
-
-[Same format. 3-5 strong projects > 10 weak ones.]
+[PLACEHOLDER] Summarize the result of the project, such as improved usability, faster delivery, better maintainability, or a successful launch. Include any measurable effect once the factual data exists.

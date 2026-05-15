@@ -1,23 +1,13 @@
 # Contact
 
-<!--
-TONE: Plain factual. A.G.I will present this info with sarcasm.
-Keep email and links current — visitors WILL click them.
--->
-
 ## Email
 
-abdghifary@gmail.com
+[PLACEHOLDER] Provide the public contact email here when the real profile data is filled in. Keep this section short and direct so the chatbot can answer contact questions without extra explanation.
 
-## Social Links
+[PLACEHOLDER] If availability or preferred contact method needs to be stated later, include it here in a neutral sentence. Avoid any private or sensitive information beyond the intended public contact details.
 
-- **GitHub:** [your-github-url]
-- **LinkedIn:** [your-linkedin-url]
-- **Portfolio/Blog:** [your-url]
-- **Twitter/X:** [your-handle]
+## Social
 
-## Availability
+[PLACEHOLDER] List public social or professional links here, such as portfolio, GitHub, LinkedIn, or other relevant profiles. Use one line per link if needed, and keep the labels easy to parse.
 
-[Optional: Open to freelance, full-time, etc.]
-
-Currently open to [opportunities type]. Based in [location/timezone].
+[PLACEHOLDER] This section should remain factual and should only include links that are meant to be public. Keep it simple so the system prompt builder can surface it cleanly.

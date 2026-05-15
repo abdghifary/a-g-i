@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { useState, useRef, useEffect } from 'react'
 import { chatCompletion } from '../utils/chat.functions'
-import { AVAILABLE_MODELS, DEFAULT_MODEL, type ChatMessage } from '../utils/chat.types'
+import type { ChatMessage, ChatRequestMessage } from '../utils/chat.types'
 
 export const Route = createFileRoute('/')({ component: App })
 
@@ -16,8 +16,7 @@ function App() {
     },
   ])
   const [input, setInput] = useState('')
-  const [selectedModel, setSelectedModel] = useState<string>(DEFAULT_MODEL)
-  
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -28,11 +27,10 @@ function App() {
   }, [messages])
 
   const chatMutation = useMutation({
-    mutationFn: async (newMessages: { role: 'user' | 'assistant' | 'system'; content: string }[]) => {
+    mutationFn: async (newMessages: ChatRequestMessage[]) => {
       const result = await chatCompletion({
         data: {
           messages: newMessages,
-          model: selectedModel,
         },
       })
       return result
@@ -78,9 +76,13 @@ function App() {
     
     inputRef.current?.focus()
 
-    chatMutation.mutate(
-      nextMessages.map(({ role, content }) => ({ role, content }))
-    )
+    const requestMessages: ChatRequestMessage[] = nextMessages.reduce<ChatRequestMessage[]>((acc, message) => {
+      if (message.role === 'system') return acc
+      acc.push({ role: message.role, content: message.content })
+      return acc
+    }, [])
+
+    chatMutation.mutate(requestMessages)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -93,20 +95,6 @@ function App() {
   return (
     <main className="flex h-full flex-col p-4 gap-4 max-w-5xl mx-auto w-full">
       <div className="flex justify-between items-center shrink-0" box-="square">
-        <div className="px-4 py-2 flex items-center gap-2">
-          <span is-="badge" variant-="foreground0">MODEL</span>
-          <select 
-            value={selectedModel} 
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className="bg-transparent border-none outline-none cursor-pointer appearance-none text-[var(--tui-fg)] hover:opacity-80"
-          >
-            {AVAILABLE_MODELS.map((m) => (
-              <option key={m.id} value={m.id} className="bg-[var(--tui-bg)]">
-                {m.label}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="px-4 py-2 border-l border-[var(--tui-border)] text-sm opacity-80">
           MSGS: {messages.length}
         </div>
@@ -191,4 +179,3 @@ function App() {
     </main>
   )
 }
-

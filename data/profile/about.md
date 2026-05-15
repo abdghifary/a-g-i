@@ -1,21 +1,13 @@
 # About
 
-<!-- 
-TONE: Plain factual, third person. A.G.I will add the sarcasm.
-Example: "Abdurachman Ghifary is a senior frontend developer..." 
-NOT: "I'm a rockstar ninja developer who crushes code"
--->
+## Background
 
-## Bio
+[PLACEHOLDER] Agi’s background summary goes here. Describe the overall professional profile in neutral third person, including the kind of frontend work the portfolio represents, the general years of experience, and the main areas of focus. Keep this factual and concise, with enough detail for retrieval without adding real personal data.
 
-[Write a 2-3 sentence bio. Third person, factual. A.G.I will spice it up.]
-
-Abdurachman Ghifary (Agi) is a frontend engineer with 5+ years of experience building React applications. He specializes in the TanStack ecosystem and modern TypeScript development. Currently focused on bridging frontend engineering with AI/LLM integration.
+[PLACEHOLDER] Mention the broad shape of the career path, such as how the work evolved from building interfaces to working with modern React ecosystems, server-side integration, or product-focused delivery. Use simple statements that can be grounded later in the profile data.
 
 ## Personality
 
-[Optional: Brief notes that inform A.G.I's representation of you.]
+[PLACEHOLDER] This section should describe work style and collaboration habits in a neutral tone. Examples: careful about quality, comfortable with ownership, focused on shipping practical solutions, and able to work across design and engineering boundaries.
 
-- Detail-oriented but pragmatic
-- Enjoys teaching and mentoring
-- Prefers shipping over perfectionism
+[PLACEHOLDER] Add one or two sentences about strengths that are useful in interviews or portfolio summaries, such as reliability, clarity in communication, and interest in maintainable systems. Do not include humor, flair, or any first-person wording.

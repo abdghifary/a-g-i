@@ -1,34 +1,17 @@
 # Experience
 
-<!--
-TONE: Plain factual, third person. Quantify achievements.
-Example: "Led migration from jQuery to React, reducing bundle size by 40%."
-NOT: "Revolutionized the frontend with mind-blowing React magic"
-Target: 200-300 words per ## section
--->
+## [Company Name]
 
-## [Job Title] — [Company Name]
+[PLACEHOLDER] Summarize one role at a company or product team. Include the team context, scope of responsibility, and the kinds of frontend systems maintained or shipped. Keep the description factual and use third person throughout.
 
-*[Start Date] – Present*
+[PLACEHOLDER] Add concrete but non-specific achievements in markdown bullet form when the real data is available later. For now, use placeholders that indicate measurable outcomes, ownership, and collaboration across product, design, and backend teams.
 
-[3-5 bullet points. Quantify with numbers, percentages, outcomes.]
+### Role
 
-- Built and maintained [X] using [tech stack], improving [metric] by [percentage]
-- Led migration from [old tech] to [new tech], reducing bundle size by [X]%
-- Mentored [N] junior developers through code reviews and pair programming
+[PLACEHOLDER] Describe the title, level, or primary responsibility for the role. Note the main stack or domain focus without inventing company details.
 
-## [Job Title] — [Company Name]
+### Achievements
 
-*[Start Date] – [End Date]*
-
-[3-5 bullet points]
-
-- Developed [feature/system] serving [N] daily active users
-- Implemented [technical solution] that reduced [problem] by [X]%
-- Collaborated with design team to ship [project] in [timeframe]
-
-## [Job Title] — [Company Name]
-
-*[Start Date] – [End Date]*
-
-[Brief description, 2-3 bullets]
+- [PLACEHOLDER] Delivered a meaningful improvement to the product experience.
+- [PLACEHOLDER] Supported a migration, refactor, or launch with measurable impact.
+- [PLACEHOLDER] Collaborated with teammates to improve quality, speed, or maintainability.
