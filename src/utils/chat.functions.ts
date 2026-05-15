@@ -68,8 +68,8 @@ function isRetryable(error: unknown): boolean {
       if (statusCode >= 400 && statusCode < 500) return false
     }
 
-    const errWithStatus = error as Error & { status?: number; response?: { status?: number } }
-    const status = errWithStatus.status ?? errWithStatus.response?.status
+    const errWithStatus = error as Error & { status?: number; statusCode?: number; response?: { status?: number } }
+    const status = errWithStatus.status ?? errWithStatus.statusCode ?? errWithStatus.response?.status
     if (status !== undefined) return RETRYABLE_STATUS_CODES.includes(status)
 
     return true
@@ -121,8 +121,8 @@ function isNonRetryableClientError(error: unknown): boolean {
 
 const getClient = () =>
   new OpenRouter({
-    apiKey: process.env['OPENROUTER_API_KEY'] ?? '',
-    httpReferer: process.env['APP_URL'] ?? 'http://localhost:3000',
+    apiKey: import.meta.env.OPENROUTER_API_KEY ?? '',
+    httpReferer: import.meta.env.APP_URL ?? 'http://localhost:3000',
     appTitle: 'A.G.I',
   })
 
