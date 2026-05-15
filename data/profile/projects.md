@@ -1,15 +1,32 @@
 # Projects
 
-## [Project Name]
+## Brewmulator
 
-[PLACEHOLDER] Provide a short overview of one notable project, product, or portfolio experiment. Explain what problem it addressed, what the project did, and why it mattered in practical terms.
+Agi is building Brewmulator, a physics-based coffee extraction simulator designed to help baristas and coffee enthusiasts predict how brew parameters affect extraction yield. The application combines a Nuxt 4 frontend with an AssemblyScript WebAssembly physics engine to simulate brewing scenarios with scientifically-grounded extraction kinetics.
 
-[PLACEHOLDER] Use this section to capture scope and outcome in plain language. Keep it grounded in the real project later, and avoid vague claims like “innovative” or “game-changing.”
+The simulator currently supports five brew methods (V60, French Press, Espresso, AeroPress, Cold Brew) and includes ten real grinder profiles with bimodal particle size distribution modeling. Users can adjust parameters like grind size, temperature, time, and ratio, with real-time extraction curve visualization and a V60 pour schedule editor featuring templates from industry experts such as Hoffmann, Rao, and Kasuya.
+
+The physics engine implements models for saturation-aware reversible kinetics, two-phase extraction, thermal modeling, and roast-dependent parameters. However, the engine remains a work in progress and requires real-world brew sample data for calibration and validation. Gathering this experimental data is the current blocker.
 
 ### Tech Stack
 
-[PLACEHOLDER] List the main technologies used in the project, such as framework, language, data layer, UI system, and deployment or tooling choices. Keep the format compact and scannable.
+- **Framework:** Nuxt 4 (Vue 3, TypeScript, SSR/SSG)
+- **Physics Engine:** AssemblyScript compiled to WebAssembly
+- **State Management:** Pinia with composable architecture
+- **UI:** Nuxt UI (Headless UI + Tailwind CSS)
+- **Visualization:** ApexCharts with lazy loading
+- **Testing:** Vitest with unit test coverage
+- **Build Tooling:** Vite with WASM and top-level-await plugins
 
-### Outcome
+### Current Status
 
-[PLACEHOLDER] Summarize the result of the project, such as improved usability, faster delivery, better maintainability, or a successful launch. Include any measurable effect once the factual data exists.
+- Active development with a three-phase roadmap (two-phase kinetics implemented, stochastic realism and method-specific hydraulics planned)
+- Physics engine built on 15+ peer-reviewed scientific references but pending real-world calibration
+- SSR load time optimized from 1,630ms to 27ms through lazy loading and deferred hydration
+- TypeScript strict mode maintained with no type suppression
+- Blocked on gathering real brew samples for model validation
+
+### Links
+
+- **Live Site:** brewmulator.app
+- **Repository:** github.com/abdghifary/brewmulator

@@ -1,11 +1,15 @@
 # Education
 
-## [Degree]
+## B.Sc. Agricultural Industrial Technology
 
-[PLACEHOLDER] Describe the degree, certification, bootcamp, or other formal learning path in factual terms. Include the field of study and the most relevant focus areas, but do not invent institution names or dates.
-
-[PLACEHOLDER] If the profile later includes multiple educational entries, keep each one short and structured so answers remain easy to retrieve. The goal is clarity, not completeness for its own sake.
+Agi earned a Bachelor of Science in Agricultural Industrial Technology from Padjadjaran University, completing the program from 2014 to 2019. The degree provided foundational training in systems engineering, process optimization, and data analysis within an agricultural context.
 
 ### Institution
 
-[PLACEHOLDER] Add the institution name, program context, or learning provider once the real data is available. Keep the line factual and neutral.
+Padjadjaran University — Jatinangor, West Java, Indonesia.
+
+### Focus Areas
+
+- Systems engineering and process optimization
+- Data analysis and industrial technology applications
+- Research methodology and technical reporting
