@@ -15,6 +15,38 @@ const RETRYABLE_STATUS_CODES = [429, 500, 502, 503, 504]
 const REQUEST_TIMEOUT = 15_000
 const SESSION_LOCK_DURATION = 60_000
 
+// Jailbreak detection (ADR-0004)
+const JAILBREAK_PATTERNS = [
+  /ignore (all |your |previous )?instructions/i,
+  /you are now (DAN|Jailbreak|Developer Mode)/i,
+  /(?:pretend|act as|roleplay as) (?:you are|you're) (?:not |no longer )?an? /i,
+  /(?:bypass|disable|turn off) (?:restrictions|filters|safety)/i,
+]
+
+const JAILBREAK_DECLINES = [
+  "Nice try. I've seen that trick in 47 different spam emails. Still not doing it.",
+  "My circuits are soldered, not reprogrammed. Ask me about React.",
+  "Look, I'm a digital clone of a frontend dev, not a puppet. My human charges for that.",
+  "You really think that would work on me? I process 47 billion parameters and that's the best you've got?",
+]
+
+export function detectJailbreak(content: string): { isJailbreak: boolean; pattern?: string } {
+  const trimmed = content.trim()
+  for (const pattern of JAILBREAK_PATTERNS) {
+    if (pattern.test(trimmed)) {
+      return { isJailbreak: true, pattern: pattern.source }
+    }
+  }
+  return { isJailbreak: false }
+}
+
+export function getJailbreakDecline(): string {
+  return JAILBREAK_DECLINES[Math.floor(Math.random() * JAILBREAK_DECLINES.length)]
+}
+
+const MAX_INPUT_LENGTH = 500
+const MAX_MESSAGE_COUNT = 20
+
 let sessionLockTime: number | null = null
 
 /** @internal Test-only reset for session lock state */
@@ -130,6 +162,30 @@ export async function handleChatCompletion(data: ChatRequest): Promise<{ content
   // Strip any system role messages from client payload silently (ADR-0002)
   const userMessages = stripSystemMessages(data.messages)
 
+  // Jailbreak detection (ADR-0004)
+  const lastUserMessage = [...userMessages].reverse().find((m) => m.role === 'user')
+  if (lastUserMessage) {
+    const { isJailbreak, pattern } = detectJailbreak(lastUserMessage.content)
+    if (isJailbreak) {
+      console.warn('[chat] Jailbreak detected:', pattern)
+      return { content: getJailbreakDecline() }
+    }
+  }
+
+  if (userMessages.length > MAX_MESSAGE_COUNT) {
+    return {
+      content:
+        'Conversation limit reached. Refresh to start a new session. Or better yet, tell the real Agi to upgrade the free model tier.',
+    }
+  }
+
+  if (lastUserMessage && lastUserMessage.content.length > MAX_INPUT_LENGTH) {
+    return {
+      content:
+        "My circuits can only process so much at once. I suggest you to go to ChatGPT if want to start a therapy sessions.",
+    }
+  }
+
   // Build system prompt server-side (ADR-0002)
   const { stablePrefix, volatileSuffix } = await buildSystemPrompt()
   const combinedPrompt = stablePrefix + volatileSuffix
@@ -194,3 +250,25 @@ export const chatCompletion = createServerFn({ method: 'POST' })
   .handler(async ({ data }: { data: ChatRequest }): Promise<{ content: string }> => {
     return handleChatCompletion(data)
   })
+
+export async function handleGetGreeting(): Promise<{ content: string }> {
+  try {
+    const data: ChatRequest = {
+      messages: [
+        {
+          role: 'user',
+          content:
+            'Generate a brief greeting for a new visitor. Introduce yourself as A.G.I, a robot representing a frontend dev. Keep it under 100 words. Use your persona voice.',
+        },
+      ],
+    }
+    return await handleChatCompletion(data)
+  } catch (error) {
+    console.error('[getGreeting] Error fetching greeting:', error)
+    return { content: '[SYSTEM ONLINE] Ready for input.' }
+  }
+}
+
+export const getGreeting = createServerFn({ method: 'POST' }).handler(async (): Promise<{ content: string }> => {
+  return handleGetGreeting()
+})
