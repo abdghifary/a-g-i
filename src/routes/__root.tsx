@@ -5,8 +5,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import BottomNav from '../components/BottomNav'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -52,11 +51,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="flex h-full flex-col">
-        <Header />
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden pb-14">
           {children}
         </div>
-        <Footer />
+        <BottomNav />
         <TanStackDevtools
           config={{
             position: 'bottom-right',
